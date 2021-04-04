@@ -1,0 +1,8 @@
+<ng-container [formGroup]="group">
+  <label>{{ config.label }}</label>
+  <select [formControlName]="config.key">
+    <option *ngFor="let option of config.options" [value]="option.key">
+      {{ option.value }}
+    </option>
+  </select>
+</ng-container>
