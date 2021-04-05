@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, ValidatorFn } from '@angular/forms';
 import { ConfigBase } from '../interfaces/Config-Base';
 
 @Injectable({

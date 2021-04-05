@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Control } from '../control.abstract';
+import { Control } from '../../dynamic-form/components/control.abstract';
 
 @Component({
   selector: 'app-button',

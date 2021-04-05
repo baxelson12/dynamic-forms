@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ConfigBase } from './dynamic-form/interfaces/Config-Base';
 import { QuestionDataService } from './services/question-data.service';

@@ -1,3 +1,5 @@
+<h2>{{ heading }}</h2>
+<h3>{{ subheading }}</h3>
 <form class="dynamic-form" [formGroup]="form" (submit)="handleSubmit($event)">
   <ng-container
     *ngFor="let field of config"
@@ -7,4 +9,6 @@
   >
   </ng-container>
 </form>
-{{ form.value | json }}
+<br />
+Value: {{ form.value | json }}<br />
+Valid: {{ form.valid }}

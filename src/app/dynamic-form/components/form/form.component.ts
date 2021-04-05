@@ -17,8 +17,17 @@ import { FormService } from '../../services/form.service';
   exportAs: 'form',
 })
 export class FormComponent implements OnChanges, OnInit {
-  @Input()
-  config: ConfigBase<string>[] = [];
+  private _config: ConfigBase<string>[] = [];
+  heading: string;
+  subheading: string;
+  @Input() set config(val: any) {
+    this.heading = val.heading;
+    this.subheading = val.subheading;
+    this._config = val.data;
+  }
+  get config() {
+    return this._config;
+  }
 
   @Output()
   submit: EventEmitter<any> = new EventEmitter<any>();
@@ -26,7 +35,7 @@ export class FormComponent implements OnChanges, OnInit {
   form: FormGroup;
 
   get controls() {
-    return this.config.filter(({ controlClass }) => controlClass !== 'button');
+    return this._config.filter(({ controlClass }) => controlClass !== 'button');
   }
   get changes() {
     return this.form.valueChanges;
@@ -58,7 +67,7 @@ export class FormComponent implements OnChanges, OnInit {
     configControls
       .filter((control) => !controls.includes(control))
       .forEach((key) => {
-        const config = this.config.find((control) => control.key === key);
+        const config = this._config.find((control) => control.key === key);
         this.form.addControl(key, this.fs.toControl(config));
       });
   }
@@ -76,7 +85,7 @@ export class FormComponent implements OnChanges, OnInit {
       return;
     }
 
-    this.config = this.config.map((item) => {
+    this._config = this._config.map((item) => {
       if (item.key === key) {
         item.disabled = disable;
       }

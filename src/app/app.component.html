@@ -1,5 +1,6 @@
-<div *ngIf="config$ | async as config">
-  <h1>Sample dynamic form</h1>
-  <app-form [config]="config" #form="form"></app-form>
-  {{ form.valid }}
-</div>
+<ng-container
+  *ngFor="let config of config$ | async"
+  generator
+  [config]="config"
+>
+</ng-container>
