@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ConfigBase } from '../../interfaces/Config-Base';
-import { FormService } from '../../services/form.service';
+import { FormService } from './form.service';
 
 @Component({
   selector: 'app-form',
@@ -56,16 +56,21 @@ export class FormComponent implements OnChanges, OnInit {
   ngOnChanges() {
     // prettier-ignore
     if (!this.form) { return; }
-
     const controls = Object.keys(this.form.controls);
     const configControls = this.controls.map((item) => item.key);
+    this.addOrRemoveControls(controls, configControls);
+  }
 
-    controls
+  private addOrRemoveControls(
+    formControls: string[],
+    configControls: string[]
+  ) {
+    formControls
       .filter((control) => !configControls.includes(control))
       .forEach((control) => this.form.removeControl(control));
 
     configControls
-      .filter((control) => !controls.includes(control))
+      .filter((control) => !formControls.includes(control))
       .forEach((key) => {
         const config = this._config.find((control) => control.key === key);
         this.form.addControl(key, this.fs.toControl(config));

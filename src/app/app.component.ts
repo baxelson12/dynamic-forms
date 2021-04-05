@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ConfigBase } from './dynamic-form/interfaces/Config-Base';
-import { QuestionDataService } from './services/question-data.service';
+import { ConfigBase } from './interfaces/Config-Base';
+import { LayoutDataService } from './services/layout-data.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,7 @@ import { QuestionDataService } from './services/question-data.service';
 export class AppComponent {
   config$: Observable<ConfigBase<string>[]>;
 
-  constructor(private qds: QuestionDataService) {
+  constructor(private qds: LayoutDataService) {
     this.config$ = this.qds.getConverted();
   }
 }

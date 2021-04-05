@@ -1,8 +1,8 @@
 <ng-container [formGroup]="group">
   <label>{{ config.label }}</label>
-  <input
+  <app-custom-input
     [type]="config.inputType"
     [placeholder]="config.placeholder"
     [formControlName]="config.key"
-  />
+  ></app-custom-input>
 </ng-container>

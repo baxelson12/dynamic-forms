@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Control } from '../../dynamic-form/components/control.abstract';
+import { Control } from '../../abstractions/control.abstract';
 
 @Component({
   selector: 'app-default',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, ValidatorFn } from '@angular/forms';
-import { ConfigBase } from '../interfaces/Config-Base';
+import { ConfigBase } from '../../interfaces/Config-Base';
 
 @Injectable({
   providedIn: 'root',

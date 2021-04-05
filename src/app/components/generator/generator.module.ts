@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GeneratorDirective } from './generator.directive';
-import { LoaderService } from './loader.service';
+import { GeneratorService } from './generator.service';
 
 @NgModule({
   declarations: [GeneratorDirective],
   imports: [CommonModule],
-  providers: [LoaderService],
+  providers: [GeneratorService],
   exports: [GeneratorDirective],
 })
 export class GeneratorModule {}

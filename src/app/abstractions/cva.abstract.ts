@@ -1,13 +1,14 @@
-import {ControlValueAccessor} from '@angular/forms';
+import { ControlValueAccessor } from '@angular/forms';
 
 // Basically just the hooks for an angular form control
-export abstract class BaseControlValueAccessor implements ControlValueAccessor {
+export abstract class BaseControlValueAccessor<T>
+  implements ControlValueAccessor {
   // tslint:disable-next-line: variable-name
-  abstract _value: any;
+  abstract _value: T;
   onChange: any = () => {};
   onTouched: any = () => {};
 
-  get value(): any {
+  get value(): T {
     return this._value;
   }
 
@@ -27,7 +28,7 @@ export abstract class BaseControlValueAccessor implements ControlValueAccessor {
 
   writeValue(value): void {
     if (value !== this._value) {
-      this.value = value;
+      this.value = value ?? '';
     }
   }
 }

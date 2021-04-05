@@ -13,13 +13,8 @@ import {
   DynamicModulesMap,
 } from '../../tokens/dynamic-modules.token';
 
-// const components = {
-//   default: () =>
-//     import('../components/default/default.module').then((m) => m.DefaultModule),
-// };
-
 @Injectable()
-export class LoaderService {
+export class GeneratorService {
   constructor(
     @Inject(DYNAMIC_MODULES) private dynamicModules: DynamicModulesMap,
     private compiler: Compiler,
