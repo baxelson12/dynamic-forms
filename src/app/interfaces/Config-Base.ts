@@ -4,7 +4,7 @@ export interface ConfigBase<T> {
   // Value of field
   value?: T;
   // Possible addtl inputs
-  data: any;
+  data?: any;
   // Key of field
   key: string;
   // Label of field

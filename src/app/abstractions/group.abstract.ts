@@ -1,44 +1,46 @@
 import { Directive, Input, OnChanges, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { FormService } from '../components/form/form.service';
 import { ConfigBase } from '../interfaces/Config-Base';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class BaseFormGroup implements OnChanges, OnInit {
+  // tslint:disable-next-line: variable-name
   _config: ConfigBase<string>[] = [];
   heading: string;
   subheading: string;
+  form: FormGroup;
+
   set config(val: any) {
     this.heading = val.heading;
     this.subheading = val.subheading;
     this._config = val.data;
   }
-  get config() {
+  get config(): any {
     return this._config;
   }
-
-  form: FormGroup;
-
-  get controls() {
+  get controls(): ConfigBase<string>[] {
     return this._config.filter(({ controlClass }) => controlClass !== 'button');
   }
-  get changes() {
+  get changes(): Observable<any> {
     return this.form.valueChanges;
   }
-  get valid() {
+  get valid(): boolean {
     return this.form.valid;
   }
-  get value() {
+  get value(): {} {
     return this.form.value;
   }
 
   constructor(private fs: FormService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form = this.fs.toFormGroup(this.controls);
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     // prettier-ignore
     if (!this.form) { return; }
     const controls = Object.keys(this.form.controls);
@@ -49,7 +51,7 @@ export abstract class BaseFormGroup implements OnChanges, OnInit {
   private addOrRemoveControls(
     formControls: string[],
     configControls: string[]
-  ) {
+  ): void {
     formControls
       .filter((control) => !configControls.includes(control))
       .forEach((control) => this.form.removeControl(control));
@@ -62,7 +64,7 @@ export abstract class BaseFormGroup implements OnChanges, OnInit {
       });
   }
 
-  setDisabled(key: string, disable: boolean) {
+  setDisabled(key: string, disable: boolean): void {
     if (this.form.controls[key]) {
       const method = disable ? 'disable' : 'enable';
       this.form.controls[key][method]();
@@ -77,7 +79,7 @@ export abstract class BaseFormGroup implements OnChanges, OnInit {
     });
   }
 
-  setValue(key: string, value: any) {
+  setValue(key: string, value: any): void {
     this.form.controls[key].setValue(value, { emitEvent: true });
   }
 }

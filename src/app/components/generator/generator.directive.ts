@@ -35,7 +35,7 @@ export class GeneratorDirective implements OnChanges, OnInit, OnDestroy {
     private gs: GeneratorService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.checkSupportedTypes(this.dm, this.config.controlClass);
     this.gs
       .load(this.config.controlClass)
@@ -51,18 +51,18 @@ export class GeneratorDirective implements OnChanges, OnInit, OnDestroy {
       .subscribe();
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     // prettier-ignore
     if (!this.component) { return; }
     this.component.instance.config = this.config;
     this.component.instance.group = this.group;
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this._destroy.next();
   }
 
-  private checkSupportedTypes(possibleTypes, type) {
+  private checkSupportedTypes(possibleTypes, type): void {
     try {
       possibleTypes[type];
     } catch (e) {
