@@ -9,4 +9,8 @@ export const ModuleRegistry: DynamicModulesMap = {
     import('../components/select/select.module').then((m) => m.SelectModule),
   form: () =>
     import('../components/form/form.module').then((m) => m.DynamicFormModule),
+  formGroup: () =>
+    import('../components/form-group/form-group.module').then(
+      (m) => m.FormGroupModule
+    ),
 };

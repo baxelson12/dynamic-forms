@@ -3,6 +3,8 @@ import { ValidatorFn, Validators } from '@angular/forms';
 export interface ConfigBase<T> {
   // Value of field
   value?: T;
+  // Possible addtl inputs
+  data: any;
   // Key of field
   key: string;
   // Label of field

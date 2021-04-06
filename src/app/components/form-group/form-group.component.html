@@ -1,0 +1,11 @@
+<ng-container [formGroup]="group">
+  <fieldset [formGroupName]="groupName">
+    <legend>{{ heading }}</legend>
+    <ng-container
+      *ngFor="let field of config"
+      generator
+      [config]="field"
+      [group]="group.get(groupName)"
+    ></ng-container>
+  </fieldset>
+</ng-container>

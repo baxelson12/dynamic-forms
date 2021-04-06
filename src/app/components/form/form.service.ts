@@ -15,9 +15,14 @@ export class FormService {
 
   toFormGroup(controls: ConfigBase<string>[]) {
     const group = this.fb.group({});
-    controls.forEach((control) =>
-      group.addControl(control.key, this.toControl(control))
-    );
+    controls.forEach((control) => {
+      if (control.controlClass === 'formGroup') {
+        group.addControl(control.key, this.toFormGroup(control.data));
+        return;
+      } else {
+        group.addControl(control.key, this.toControl(control));
+      }
+    });
     return group;
   }
 }
