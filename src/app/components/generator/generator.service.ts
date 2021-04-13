@@ -4,6 +4,7 @@ import {
   Inject,
   Injectable,
   Injector,
+  NgModuleRef,
   Type,
 } from '@angular/core';
 import { NgModuleFactory } from '@angular/core/src/r3_symbols';
@@ -72,17 +73,7 @@ export class GeneratorService {
   ): ComponentFactory<unknown> {
     const ref = moduleFactory.create(injector);
     const component: Type<unknown> = ref.injector.get(DYNAMIC_INPUT);
-    try {
-      return ref.componentFactoryResolver.resolveComponentFactory<unknown>(
-        component
-      );
-    } catch (e) {
-      // In the event of an invalid token
-      console.error(
-        `Could not resolve dynamic token.  Verify the value and try again.`,
-        e
-      );
-    }
+    return this._resolveComponent(ref, component);
   }
 
   /**
@@ -95,9 +86,28 @@ export class GeneratorService {
       possibleTypes[type];
     } catch (e) {
       const supportedTypes = Object.keys(possibleTypes).join(', ');
-      console.warn(
-        `Trying to use an unsupported type (${type}). Supported types: ${supportedTypes}`
+      const message = `Trying to use an unsupported type (${type}). Supported types: ${supportedTypes}`;
+      console.warn(message, e);
+    }
+  }
+
+  /**
+   * Resolves a given component with its module's factory
+   * @param ref The lazy module reference
+   * @param component The component to be created
+   */
+  private _resolveComponent(
+    ref: NgModuleRef<unknown>,
+    component: Type<unknown>
+  ): ComponentFactory<unknown> {
+    try {
+      return ref.componentFactoryResolver.resolveComponentFactory<unknown>(
+        component
       );
+    } catch (e) {
+      // In the event of an invalid token
+      const message = `Could not resolve dynamic token.  Verify the value and try again.`;
+      console.error(message, e);
     }
   }
 }
