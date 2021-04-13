@@ -36,7 +36,6 @@ export class GeneratorDirective implements OnChanges, OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.checkSupportedTypes(this.dm, this.config.controlClass);
     this.gs
       .load(this.config.controlClass)
       .pipe(
@@ -60,16 +59,5 @@ export class GeneratorDirective implements OnChanges, OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._destroy.next();
-  }
-
-  private checkSupportedTypes(possibleTypes, type): void {
-    try {
-      possibleTypes[type];
-    } catch (e) {
-      const supportedTypes = Object.keys(possibleTypes).join(', ');
-      throw new Error(
-        `Trying to use an unsupported type (${this.config.controlClass}). Supported types: ${supportedTypes}`
-      );
-    }
   }
 }
