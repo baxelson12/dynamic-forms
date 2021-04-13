@@ -3,7 +3,6 @@ import {
   ComponentFactory,
   Inject,
   Injectable,
-  InjectionToken,
   Injector,
   Type,
 } from '@angular/core';
@@ -86,6 +85,11 @@ export class GeneratorService {
     }
   }
 
+  /**
+   * Verifies a module key exists in registry
+   * @param possibleTypes An object containing types of modules
+   * @param type The module type in question
+   */
   private _checkSupportedTypes(possibleTypes, type): void {
     try {
       possibleTypes[type];
