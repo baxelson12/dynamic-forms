@@ -3,6 +3,7 @@ import {
   ComponentFactory,
   Inject,
   Injectable,
+  InjectionToken,
   Injector,
   Type,
 } from '@angular/core';
@@ -71,7 +72,7 @@ export class GeneratorService {
     moduleFactory: NgModuleFactory<unknown>
   ): ComponentFactory<unknown> {
     const ref = moduleFactory.create(injector);
-    const component = ref.injector.get(DYNAMIC_INPUT);
+    const component: Type<unknown> = ref.injector.get(DYNAMIC_INPUT);
     try {
       return ref.componentFactoryResolver.resolveComponentFactory<unknown>(
         component
@@ -79,7 +80,7 @@ export class GeneratorService {
     } catch (e) {
       // In the event of an invalid token
       console.error(
-        `Could not resolve '${DYNAMIC_INPUT.toString}'.  Did you add a `,
+        `Could not resolve dynamic token.  Verify the value and try again.`,
         e
       );
     }

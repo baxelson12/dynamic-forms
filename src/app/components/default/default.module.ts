@@ -8,7 +8,12 @@ import { CustomInputModule } from '../custom-input/custom-input.module';
 @NgModule({
   declarations: [DefaultComponent],
   imports: [CommonModule, ReactiveFormsModule, CustomInputModule],
-  providers: [{ provide: DYNAMIC_INPUT, useValue: DefaultComponent }],
+  providers: [
+    {
+      provide: DYNAMIC_INPUT,
+      useValue: DefaultComponent,
+    },
+  ],
   exports: [DefaultComponent],
 })
 export class DefaultModule {}
