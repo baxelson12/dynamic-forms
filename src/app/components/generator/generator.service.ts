@@ -7,8 +7,8 @@ import {
   Type,
 } from '@angular/core';
 import { NgModuleFactory } from '@angular/core/src/r3_symbols';
-import { from, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { DYNAMIC_INPUT } from '../../tokens/dynamic-input.token';
 import {
   DYNAMIC_MODULES,
@@ -67,8 +67,12 @@ export class GeneratorService {
   ): ComponentFactory<unknown> {
     const ref = moduleFactory.create(injector);
     const component = ref.injector.get(DYNAMIC_INPUT);
-    return ref.componentFactoryResolver.resolveComponentFactory<unknown>(
-      component
-    );
+    try {
+      return ref.componentFactoryResolver.resolveComponentFactory<unknown>(
+        component
+      );
+    } catch (e) {
+      console.error(`Could not resolve '${DYNAMIC_INPUT.toString}'`, e);
+    }
   }
 }
