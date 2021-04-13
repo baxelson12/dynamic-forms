@@ -5,5 +5,5 @@ export const DYNAMIC_MODULES = new InjectionToken<DynamicModulesMap>(
 );
 
 export interface DynamicModulesMap {
-  [key: string]: () => Promise<Type<unknown>>;
+  [key: string]: () => Promise<unknown>;
 }

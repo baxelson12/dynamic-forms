@@ -4,9 +4,11 @@ import {
   Inject,
   Injectable,
   Injector,
-  NgModuleFactory,
+  Type,
 } from '@angular/core';
+import { NgModuleFactory } from '@angular/core/src/r3_symbols';
 import { from, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { DYNAMIC_INPUT } from '../../tokens/dynamic-input.token';
 import {
   DYNAMIC_MODULES,
@@ -21,21 +23,52 @@ export class GeneratorService {
     private injector: Injector
   ) {}
 
+  /**
+   * Dynamically loads a component
+   * @param moduleKey Key defined in DynamicModulesMap
+   */
   load(moduleKey: string): Observable<ComponentFactory<unknown>> {
-    const promise = this.dynamicModules[moduleKey]()
-      .then((moduleOrFactory) =>
-        this.compiler.compileModuleAsync(moduleOrFactory)
-      )
-      .then((factory: NgModuleFactory<any>) => {
-        const lazyModuleRef = factory.create(this.injector);
-        // const componentType: Type<any> = lazyModuleRef.instance.entryComponentsType;
-        const comp = lazyModuleRef.injector.get(DYNAMIC_INPUT);
-        const fact = lazyModuleRef.componentFactoryResolver.resolveComponentFactory<unknown>(
-          comp
-        );
-        return fact;
-      });
+    return from(this.dynamicModules[moduleKey]()).pipe(
+      map(this._returnModule),
+      switchMap((r) => this._promiseToObservable(this.compiler, r)),
+      map((factory) => this._createComponentFactory(this.injector, factory))
+    );
+  }
 
-    return from(promise);
+  /**
+   * Grabs the module from the import
+   * @param module The (unloaded) module to be compiled
+   */
+  private _returnModule(module: Object): Type<unknown> {
+    const key = Object.keys(module)[0];
+    return module[key] as Type<unknown>;
+  }
+
+  /**
+   * Compiles a module async
+   * @param compiler Compiler injected in ctor
+   * @param module Module to be compiled
+   */
+  private _promiseToObservable(
+    compiler: Compiler,
+    module: Type<unknown>
+  ): Observable<NgModuleFactory<unknown>> {
+    return from(compiler.compileModuleAsync(module));
+  }
+
+  /**
+   * Creates a component factory
+   * @param injector Injector injected in ctor
+   * @param moduleFactory Module factory to be used for component instantiation
+   */
+  private _createComponentFactory(
+    injector: Injector,
+    moduleFactory: NgModuleFactory<unknown>
+  ): ComponentFactory<unknown> {
+    const ref = moduleFactory.create(injector);
+    const component = ref.injector.get(DYNAMIC_INPUT);
+    return ref.componentFactoryResolver.resolveComponentFactory<unknown>(
+      component
+    );
   }
 }
