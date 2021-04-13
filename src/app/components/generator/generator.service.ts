@@ -7,7 +7,7 @@ import {
   Type,
 } from '@angular/core';
 import { NgModuleFactory } from '@angular/core/src/r3_symbols';
-import { from, Observable, of } from 'rxjs';
+import { EMPTY, from, Observable } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { DYNAMIC_INPUT } from '../../tokens/dynamic-input.token';
 import {
@@ -31,7 +31,11 @@ export class GeneratorService {
     return from(this.dynamicModules[moduleKey]()).pipe(
       map(this._returnModule),
       switchMap((r) => this._promiseToObservable(this.compiler, r)),
-      map((factory) => this._createComponentFactory(this.injector, factory))
+      map((factory) => this._createComponentFactory(this.injector, factory)),
+      catchError((e) => {
+        console.warn('Generic error', e);
+        return EMPTY;
+      })
     );
   }
 
