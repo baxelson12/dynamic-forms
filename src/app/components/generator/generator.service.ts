@@ -28,12 +28,13 @@ export class GeneratorService {
    * @param moduleKey Key defined in DynamicModulesMap
    */
   load(moduleKey: string): Observable<ComponentFactory<unknown>> {
+    this._checkSupportedTypes(this.dynamicModules, moduleKey);
     return from(this.dynamicModules[moduleKey]()).pipe(
       map(this._returnModule),
       switchMap((r) => this._promiseToObservable(this.compiler, r)),
       map((factory) => this._createComponentFactory(this.injector, factory)),
       catchError((e) => {
-        console.warn('Generic error', e);
+        console.warn('Generic module load error', e);
         return EMPTY;
       })
     );
@@ -76,7 +77,22 @@ export class GeneratorService {
         component
       );
     } catch (e) {
-      console.error(`Could not resolve '${DYNAMIC_INPUT.toString}'`, e);
+      // In the event of an invalid token
+      console.error(
+        `Could not resolve '${DYNAMIC_INPUT.toString}'.  Did you add a `,
+        e
+      );
+    }
+  }
+
+  private _checkSupportedTypes(possibleTypes, type): void {
+    try {
+      possibleTypes[type];
+    } catch (e) {
+      const supportedTypes = Object.keys(possibleTypes).join(', ');
+      console.warn(
+        `Trying to use an unsupported type (${type}). Supported types: ${supportedTypes}`
+      );
     }
   }
 }
