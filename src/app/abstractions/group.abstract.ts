@@ -1,6 +1,7 @@
 import { Directive, Input, OnChanges, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { ModifiedFormGroup } from '../classes/formGroup';
 import { FormService } from '../components/form/form.service';
 import { ConfigBase } from '../interfaces/Config-Base';
 
@@ -11,7 +12,7 @@ export abstract class BaseFormGroup implements OnChanges, OnInit {
   _config: ConfigBase<string>[] = [];
   heading: string;
   subheading: string;
-  form: FormGroup;
+  form: ModifiedFormGroup;
 
   set config(val: any) {
     this.heading = val.heading;
